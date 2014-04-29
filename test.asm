@@ -36,6 +36,26 @@ loop:
         mov  rax, 140
 
 end:
+        push rax
+        call output_int
+        call output_tab
+        add  rsp 8
+
+        push rbx
+        call output_int
+        call output_tab
+        add  rsp 8
+
+        push rcx
+        call output_int
+        call output_tab
+        add  rsp 8
+
+        push rdx
+        call output_int
+        call output_tab
+        add  rsp 8
+
         pop  rbx
         pop  rcx
         pop  rbx
@@ -79,3 +99,68 @@ output_char:                    ; void output_char (ch)
         pop  rbx
         pop  rax
         ret
+
+        output_newline:                 ; void output_newline ()
+       push qword LF
+       call output_char
+       add rsp, 8
+       ret
+
+; ------------------------
+
+output_tab:                     ; void output_tab ()
+       push qword TAB
+       call output_char
+       add  rsp, 8
+       ret
+
+; ------------------------
+
+output_minus:                   ; void output_minus()
+       push qword MINUS
+       call output_char
+       add  rsp, 8
+       ret
+
+; ------------------------
+
+output_int:                     ; void output_int (int N)
+       push rbp
+       mov  rbp, rsp
+
+       ; rax=N then N/10, rdx=N%10, rbx=10
+
+       push rax                ; save registers
+       push rbx
+       push rdx
+
+       cmp  qword [rbp+16], 0 ; minus sign for negative numbers
+       jge  L88
+
+       call output_minus
+       neg  qword [rbp+16]
+
+L88:
+       mov  rax, [rbp+16]       ; rax = N
+       mov  rdx, 0              ; rdx:rax = N (unsigned equivalent of "cqo")
+       mov  rbx, 10
+       idiv rbx                ; rax=N/10, rdx=N%10
+
+       cmp  rax, 0              ; skip if N<10
+       je   L99
+
+       push rax                ; output.int (N / 10)
+       call output_int
+       add  rsp, 8
+
+L99:
+       add  rdx, '0'           ; output char for digit N % 10
+       push rdx
+       call output_char
+       add  rsp, 8
+
+       pop  rdx                ; restore registers
+       pop  rbx
+       pop  rax
+       pop  rbp
+       ret
