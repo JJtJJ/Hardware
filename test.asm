@@ -177,3 +177,10 @@ LINUX   equ     80H             ; interupt number for entering Linux kernel
 EXIT    equ     1               ; Linux system call 1 i.e. exit ()
 WRITE   equ     4               ; Linux system call 4 i.e. write ()
 STDOUT  equ     1               ; File descriptor 1 i.e. standard output
+
+; ---------------------------------------------------------------------
+
+        ; The following is used by output_char - do not disturb
+        ;
+        ; space in I/O-accessible segment for 1-octet output buffer
+octetbuffer     DQ 0            ; (qword as choice of size on stack)
