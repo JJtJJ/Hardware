@@ -39,22 +39,22 @@ end:
         push rax
         call output_int
         call output_tab
-        add  rsp 8
+        add  rsp, 8
 
         push rbx
         call output_int
         call output_tab
-        add  rsp 8
+        add  rsp, 8
 
         push rcx
         call output_int
         call output_tab
-        add  rsp 8
+        add  rsp, 8
 
         push rdx
         call output_int
         call output_tab
-        add  rsp 8
+        add  rsp, 8
 
         pop  rbx
         pop  rcx
